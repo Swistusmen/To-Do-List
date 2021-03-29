@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ToDoApp());
-}
+void main() =>runApp(ToDoApp());
+
 
 class ToDoApp extends StatelessWidget{
   @override 
@@ -58,36 +57,10 @@ class ToDoListState extends State<TodoList>{
     );
   }
 
-  /*
-void _promptRemoveTodoItem(int index) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return new AlertDialog(
-        title: new Text('Mark "${_todoItems[index]}" as done?'),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text('CANCEL'),
-            onPressed: () => Navigator.of(context).pop()
-          ),
-          new FlatButton(
-            child: new Text('MARK AS DONE'),
-            onPressed: () {
-              _removeTodoItem(index);
-              Navigator.of(context).pop();
-            }
-          )
-        ]
-      );
-    }
-  );
-}
-  */
-
-  void _addTodoItem(){
+  void _addTodoItem(String task){
     setState((){
       int index=_todoItems.length;
-      _todoItems.add('Item'+index.toString());
+      _todoItems.add(task);
     });
   }
 
@@ -110,10 +83,37 @@ void _promptRemoveTodoItem(int index) {
       ),
       body: _buildTodoList(),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _addTodoItem,
+        onPressed: _pushAddToScreen,
         tooltip: 'Add task',
         child: new Icon(Icons.add)
       ),
     );
+  }
+
+  void _pushAddToScreen()
+  {
+    Navigator.of(context).push(
+
+      new MaterialPageRoute(
+        builder: (context){
+          return new Scaffold(
+            appBar:new AppBar(
+              title: new Text("Add new task")
+            ),
+            body: new TextField(
+              autofocus: true,
+              onSubmitted: (val){
+                _addTodoItem(val);
+                Navigator.pop(context);
+              },
+              decoration: new InputDecoration(
+                hintText: 'Enter name',
+                contentPadding: const EdgeInsets.all(16.0)
+              ),
+            )
+            );
+        }
+        ) 
+      );
   }
 }
