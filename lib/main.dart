@@ -22,6 +22,35 @@ class TodoList extends StatefulWidget{
 class ToDoListState extends State<TodoList>{
   List<String> _todoItems=[];
 
+  void _removeToDoItem(int index)
+  {
+    setState(()=>_todoItems.removeAt(index));
+  }
+
+  void _promptRemoveTodoItem(int index){
+    showDialog(
+      context: context,
+      builder: (BuildContext){
+        return new AlertDialog(
+          title: new Text('Mark ${_todoItems[index]} as done?'),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Cancel"),
+              onPressed: ()=> Navigator.of(context).pop()
+            ),
+            new FlatButton(
+              child: new Text("MARK AS DONE"),
+              onPressed: (){
+                _removeToDoItem(index);
+                Navigator.of(context).pop();
+              }
+            )
+          ]
+        );
+      }
+    );
+  }
+
   void _addTodoItem(){
     setState((){
       int index=_todoItems.length;
